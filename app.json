@@ -1,0 +1,6 @@
+{
+  "name": "MsO5-ws-s test app",
+  "description": "Miku's Origin 5 websocket server testing",
+  "repository": "https://github.com/phellutone/MsO5-ws-s",
+  "keywords": ["node", "websocket"]
+}
