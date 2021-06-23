@@ -20,7 +20,7 @@ wss.on('connection', ws => {
     if(!clist.includes(ws)) clist.push(ws);
     
     wss.clients.forEach(client => {
-      if(!clist.includes(client)) client.send(message);
+      if(!clist.includes(client)) client.send(client+':'+message);
     });
   });
   ws.on('close', () => {
