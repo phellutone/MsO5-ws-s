@@ -21,9 +21,7 @@ wss.on('connection', ws => {
     
     wss.clients
      .filter(client => !clist.includes(client))
-     .forEach(client => {
-      client.send(message)
-    });
+     .forEach(client => client.send(message));
   });
   ws.on('close', () => {
     console.log('Client disconnected');
