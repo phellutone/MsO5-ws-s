@@ -13,19 +13,22 @@ const server = express()
 const wss = new Server({ server });
 
 var clist =　[];
+var cc = 0;
 
 wss.on('connection', ws => {
   console.log('Client connected');
+  cc++;
   ws.on('message', message => {
     if(!clist.includes(ws)) clist.push(ws);
     
     wss.clients.forEach(client => {
-      if(!clist.includes(client)) client.send(client.toString()+':'+message);
+      if(!clist.includes(client)) client.send(cc+':'+message);
     });
   });
   ws.on('close', () => {
     console.log('Client disconnected');
-    clist = clist.filter(n => n != ws)
+    clist = clist.filter(n => n != ws);
+    cc--;
   });
 });
 
