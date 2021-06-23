@@ -12,14 +12,32 @@ const server = express()
 
 const wss = new Server({ server });
 
+var clist = {
+  get: [],
+  post: []
+};
+
 wss.on('connection', (ws) => {
   console.log('Client connected');
   ws.on('message', message => {
-    wss.clients.forEach((client) => {
-      client.send(message);
+    //message analyze
+    var msg = JSON.parse(message);
+    //push clist
+    if(msg.head == 'get'){
+      if(!clist.get.includes(ws)) clist.get.push(ws)
+    }else if(msg.head == 'post'){
+      if(!clist.post.includes(ws)) clist.post.push(ws)
+    }
+    
+    clist.get.forEach((client) => {
+      client.send(msg.data);
     });
   });
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    //pop clist
+    clist = clist.filter(n => n != ws)
+  });
 });
 
 
