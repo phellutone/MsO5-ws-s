@@ -36,7 +36,7 @@ wss.on('connection', ws => {
 
 setInterval(() => {
   wss.clients.forEach(client => {
-    client.send(new Date().toTimeString()+"@"+Math.floor(Math.random() * 3)+"_"+Math.floor(Math.random() * 5));
+    client.send(new Date().toTimeString()+"@"+Math.floor(Math.random() * 3)+"_"+Math.floor(Math.random() * 20));
   });
-}, 100);
+}, 50);
 
