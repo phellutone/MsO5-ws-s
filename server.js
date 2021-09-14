@@ -13,8 +13,8 @@ const server = express()
     console.log('url'+req.url);
     console.log('baseUrl'+req.baseUrl);
     console.log('originalUrl'+req.originalUrl);
-    console.log('_parsedUrl'+req._parsedUrl);
-    console.log('res'+req.res);
+    console.log('_parsedUrl'+Object.getOwnPropertyNames(req._parsedUrl));
+    console.log('res'+Object.getOwnPropertyNames(req.res));
   });
 
 const wss = new Server({ server });
