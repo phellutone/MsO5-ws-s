@@ -16,7 +16,7 @@ var clist =　[];
 var cc = 0;
 
 wss.on('request', req => {
-  console.log(req.resource);
+  console.log('Request resource: '+req.resource);
 });
 
 wss.on('connection', ws => {
