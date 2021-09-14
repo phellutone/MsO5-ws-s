@@ -1,14 +1,21 @@
 <html>
   <head>
     <script>
-      let HOST = location.origin.replace(/^http/, 'ws')
-      let ws = new WebSocket(HOST);
-      let el;
+      var loc = window.location, new_uri
+      if (loc.protocol === "https:") {
+          new_uri = "wss:";
+      } else {
+          new_uri = "ws:";
+      }
+      new_uri += "//"+loc.host+loc.pathname
+      let ws = new WebSocket(new_uri)
+      console.log(ws.url)
+      let el
 
       ws.onmessage = (event) => {
-        el = document.getElementById('server-time');
-        el.innerHTML = 'Server time: ' + event.data;
-      };
+        el = document.getElementById('server-time')
+        el.innerHTML = 'Server time: ' + event.data
+      }
     </script>
   </head>
   <body>
