@@ -9,13 +9,7 @@ const INDEX = '/index.html';
 const server = express()
   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
   .listen(PORT, () => console.log(`Listening on ${PORT}`))
-  .on('request', req => {
-    console.log('url'+req.url);
-    console.log('baseUrl'+req.baseUrl);
-    console.log('originalUrl'+req.originalUrl);
-    console.log('_parsedUrl'+Object.getOwnPropertyNames(req._parsedUrl));
-    console.log('res'+Object.getOwnPropertyNames(req.res));
-  });
+  .on('request', req => console.log('url: '+req.url));
 
 const wss = new Server({ server });
 
@@ -25,6 +19,8 @@ var cc = 0;
 wss.on('connection', ws => {
   console.log('Client connected');
   cc++;
+
+  console.log(ws.url);
 
   ws.on('message', message => {
     if(!clist.includes(ws)) clist.push(ws);
