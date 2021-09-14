@@ -20,7 +20,7 @@ wss.on('connection', ws => {
   console.log('Client connected');
   cc++;
 
-  console.log(ws.url);
+  console.log(wss.clients.forEach(client => console.log(client.url)));
 
   ws.on('message', message => {
     if(!clist.includes(ws)) clist.push(ws);
