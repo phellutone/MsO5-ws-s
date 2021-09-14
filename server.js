@@ -15,13 +15,13 @@ const wss = new Server({ server });
 var clist =　[];
 var cc = 0;
 
+wss.on('request', req => {
+  console.log(req.resource);
+});
+
 wss.on('connection', ws => {
   console.log('Client connected');
   cc++;
-
-  ws.on('request', req => {
-    console.log(req.resource);
-  });
 
   ws.on('message', message => {
     if(!clist.includes(ws)) clist.push(ws);
