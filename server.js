@@ -18,8 +18,14 @@ var hlist = [];
 wss.on('connection', (ws, req) => {
   console.log(`Client connected from: ${req.url}`);
 
-  if(req.url == '/c' && !clist.includes(ws)) clist.push(ws);
-  if(req.url == '/h' && !hlist.includes(ws)) hlist.push(ws);
+  if(req.url == '/c' && !clist.includes(ws)){
+    clist.push(ws);
+    ws.send('client connected');
+  }
+  if(req.url == '/h' && !hlist.includes(ws)){
+    hlist.push(ws);
+    ws.send('host connected');
+  }
 
   ws.on('message', message => {
     wss.clients.forEach(client => {
