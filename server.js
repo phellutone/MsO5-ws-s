@@ -15,6 +15,10 @@ const wss = new Server({ server });
 var clist =　[];
 var cc = 0;
 
+wss.on('reqest', req => {
+  console.log(req.resource)
+});
+
 wss.on('connection', ws => {
   console.log('Client connected');
   cc++;
