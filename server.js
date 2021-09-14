@@ -8,7 +8,8 @@ const INDEX = '/index.html';
 
 const server = express()
   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+  .listen(PORT, () => console.log(`Listening on ${PORT}`))
+  .on('request', req => console.log('req res:'+req))
 
 const wss = new Server({ server });
 
@@ -16,7 +17,7 @@ var clist =　[];
 var cc = 0;
 
 wss.on('request', req => {
-  console.log('Request resource: '+req.resource);
+  console.log('Request resource: '+req);
 });
 
 wss.on('connection', ws => {
