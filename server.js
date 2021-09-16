@@ -12,37 +12,40 @@ const server = express()
 
 const wss = new Server({ server });
 
-var clist = [];
-var hlist = [];
+var clientlist = [];
+var listenerList = [];
 
 wss.on('connection', (ws, req) => {
   console.log(`Client connected from: ${req.url}`);
 
-  if(req.url == '/c' && !clist.includes(ws)){
-    clist.push(ws);
-    ws.send('client connected');
-  }
-  if(req.url == '/h' && !hlist.includes(ws)){
-    hlist.push(ws);
-    ws.send('host connected');
+  if(req.url == '/c' && !clientlist.includes(ws)){
+    clientlist.push(ws);
+    ws.on('message', message => {
+      listenerList.forEach(listener => {
+
+        //不正データ検知
+
+        listener.send(message);
+      });
+    });
+    ws.send('connected as client');
   }
 
-  ws.on('message', message => {
-    wss.clients.forEach(client => {
-      if(hlist.includes(client)) client.send(message);
-    });
-  });
+  if(req.url == '/l' && !listenerList.includes(ws)){
+    listenerList.push(ws);
+    ws.send('connected as listener');
+  }
 
   ws.on('close', () => {
+    clientlist = clientlist.filter(n => n != ws);
+    listenerList = listenerList.filter(n => n != ws);
     console.log('Client disconnected');
-    clist = clist.filter(n => n != ws);
-    hlist = hlist.filter(n => n != ws);
   });
 });
 
 setInterval(() => {
   wss.clients.forEach(client => {
-    if(clist.includes(client) || hlist.includes(client)) return;
+    if(clientlist.includes(client) || listenerList.includes(client)) return;
     client.send(new Date().toTimeString()+"@"+Math.floor(Math.random() * 3)+"_"+Math.floor(Math.random() * 20));
   });
 }, 1000);
