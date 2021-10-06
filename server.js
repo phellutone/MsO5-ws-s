@@ -35,14 +35,26 @@ wss.on('connection', (ws, req) => {
     clientlist.push(ws);
     ws.on('message', message => {
 
-      //不正データ検知
+      var err_msg = ''
+      try{
+        var mdata = message.split('_')
+        var sdata = JSON.stringify({
+          id: mdata[0],
+          color: mdata[1],
+          state: mdata[2]
+        })
 
-      listenerList.forEach(listener => {
-        listener.send(message);
-      });
+        listenerList.forEach(listener => {
+          listener.send(sdata);
+        });
+      }catch(e){
+        err_msg = e
+      }
+      
       stateResponce(`
         state change: on message,
         data: ${message},
+        msg: ${err_msg},
       `);
     });
     ws.send('connected as client');
@@ -74,6 +86,6 @@ wss.on('connection', (ws, req) => {
 
 setInterval(() => {
   otherlist.forEach(other => {
-    other.send(new Date().toTimeString()+"@"+Math.floor(Math.random() * 3)+"_"+Math.floor(Math.random() * 20));
+    other.send(new Date().toTimeString());
   });
 }, 1000);
