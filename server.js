@@ -17,15 +17,14 @@ var listenerList = [];
 var statelist = [];
 var otherlist = [];
 
+var stateinfo = '';
+
 const stateResponce = data => {
-  statelist.forEach(req => {
-    req.send(`current state,
-      clients: ${clientlist.length},
-      listeners: ${listenerList.length},
-      state requests: ${statelist.length},
-      others: ${otherlist.length},
-    `+data);
-  });
+  stateinfo = `clients: ${clientlist.length},
+    listeners: ${listenerList.length},
+    state requests: ${statelist.length},
+    others: ${otherlist.length},
+  `+data;
 }
 
 wss.on('connection', (ws, req) => {
@@ -35,21 +34,21 @@ wss.on('connection', (ws, req) => {
     clientlist.push(ws);
     ws.on('message', message => {
 
-      var err_msg = ''
-      var sdata = undefined
+      var err_msg = '';
+      var sdata = undefined;
       try{
-        var mdata = message.split('_')
+        var mdata = message.split('_');
         sdata = JSON.stringify({
           id: mdata[0],
           color: mdata[1],
           state: mdata[2]
-        })
+        });
 
         listenerList.forEach(listener => {
           listener.send(sdata);
         });
       }catch(e){
-        err_msg = e
+        err_msg = e;
       }
       
       stateResponce(`
@@ -86,6 +85,9 @@ wss.on('connection', (ws, req) => {
 });
 
 setInterval(() => {
+  statelist.forEach(req => {
+    req.send(new Date().toTimeString()+stateinfo);
+  })
   otherlist.forEach(other => {
     other.send(new Date().toTimeString());
   });
