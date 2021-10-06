@@ -16,6 +16,14 @@
         el = document.getElementById('server-time')
         el.innerHTML = 'Server time: ' + event.data.replace(/\n/g, '<br>')
       }
+
+      ws.onerror = (event) => {
+        console.log(event)
+      }
+
+      ws.onclose = () => {
+        console.log('closed')
+      }
     </script>
   </head>
   <body>
