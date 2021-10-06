@@ -36,9 +36,10 @@ wss.on('connection', (ws, req) => {
     ws.on('message', message => {
 
       var err_msg = ''
+      var sdata = undefined
       try{
         var mdata = message.split('_')
-        var sdata = JSON.stringify({
+        sdata = JSON.stringify({
           id: mdata[0],
           color: mdata[1],
           state: mdata[2]
@@ -53,7 +54,7 @@ wss.on('connection', (ws, req) => {
       
       stateResponce(`
         state change: on message,
-        data: ${message},
+        data: ${sdata || message},
         msg: ${err_msg},
       `);
     });
