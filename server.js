@@ -20,7 +20,8 @@ var otherlist = [];
 var stateinfo = '';
 
 const stateResponce = data => {
-  stateinfo = `clients: ${clientlist.length},
+  stateinfo = `
+    clients: ${clientlist.length},
     listeners: ${listenerList.length},
     state requests: ${statelist.length},
     others: ${otherlist.length},
