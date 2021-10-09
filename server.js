@@ -40,9 +40,9 @@ wss.on('connection', (ws, req) => {
       try{
         var mdata = message.split('_');
         sdata = JSON.stringify({
-          id: mdata[0],
-          color: mdata[1],
-          state: mdata[2]
+          id: isNaN(mdata[0])? 0 : mdata[0],
+          color: isNaN(mdata[1])? 0 : mdata[1],
+          state: isNaN(mdata[2])? 0: mdata[2]
         });
 
         listenerList.forEach(listener => {
