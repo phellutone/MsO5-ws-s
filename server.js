@@ -89,6 +89,12 @@ setInterval(() => {
   statelist.forEach(req => {
     req.send(new Date().toTimeString()+stateinfo);
   })
+  listenerList.forEach(other => {
+    other.send(new Date().toTimeString());
+  });
+  clientlist.forEach(other => {
+    other.send(new Date().toTimeString());
+  });
   otherlist.forEach(other => {
     other.send(new Date().toTimeString());
   });
