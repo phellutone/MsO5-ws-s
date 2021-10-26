@@ -56,6 +56,7 @@ wss.on('connection', (ws, req) => {
         state change: on message,
         data: ${sdata || message},
         msg: ${err_msg},
+        org: ${message}
       `);
     });
     ws.send('connected as client');
