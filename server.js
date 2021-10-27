@@ -46,7 +46,7 @@ wss.on('connection', (ws, req) => {
         if(mdata.length < 3) throw new Error('invalid value')
 
         let id = uuid.list.find(c => c.uuid == mdata[0])
-        let id_number = (id)? id.id : mdata[0]
+        let id_number = (id)? id.id : mdata[0]+1
         if(isNaN(id_number) || id_number < 1 || 21 < id_number) throw new Error('invalid id value')
 
         let color_number = isNaN(mdata[1])? 99 : mdata[1]
