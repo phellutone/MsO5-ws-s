@@ -1,5 +1,8 @@
 'use strict';
 
+/** @type {{ name: String, list: Array<{ id: Number, uuid: String, c_uuid: String }> }} */
+const uuid = require('./uuid.json')
+
 const express = require('express');
 const { Server } = require('ws');
 
@@ -35,14 +38,24 @@ wss.on('connection', (ws, req) => {
     clientlist.push(ws);
     ws.on('message', message => {
 
-      var err_msg = '';
-      var sdata = undefined;
+      let err_msg = '';
+      let sdata = undefined;
       try{
-        var mdata = message.split('_');
+        let mdata = message.split('_');
+
+        if(mdata.length < 3) throw new Error('invalid value')
+
+        let id = uuid.list.find(c => c.uuid == mdata[0])
+        let id_number = (id)? id.id : mdata[0]
+        if(isNaN(id_number) || id_number < 1 || 21 < id_number) throw new Error('invalid id value')
+
+        let color_number = isNaN(mdata[1])? 99 : mdata[1]
+        let state_number = isNaN(mdata[2])? 99 : mdata[2]
+
         sdata = JSON.stringify({
-          id: isNaN(mdata[0])? 0 : mdata[0],
-          color: isNaN(mdata[1])? 0 : mdata[1],
-          state: isNaN(mdata[2])? 0: mdata[2]
+          id: id_number,
+          color: color_number,
+          state: state_number
         });
 
         listenerList.forEach(listener => {
