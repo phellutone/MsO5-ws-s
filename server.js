@@ -49,8 +49,8 @@ wss.on('connection', (ws, req) => {
         let id_number = (id)? id.id : parseInt(mdata[0])+1
         if(isNaN(id_number) || id_number < 1 || 21 < id_number) throw new Error('invalid id value')
 
-        let color_number = isNaN(mdata[1])? 99 : mdata[1]
-        let state_number = isNaN(mdata[2])? 99 : mdata[2]
+        let color_number = parseInt(isNaN(mdata[1])? 99 : mdata[1])
+        let state_number = parseInt(isNaN(mdata[2])? 99 : mdata[2])
 
         sdata = JSON.stringify({
           id: id_number,
